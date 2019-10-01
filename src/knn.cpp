@@ -20,12 +20,12 @@ void KNNClassifier::fit(const SparseMatrix& X, const Vector& y)
 /**
 * Devuelve un vector con la distancia al cuadrado de 'row' con respecto a cada elemento del entrenamiento
 */
-Vector KNNClassifier::_distanceToRow(const Vector& row)
+Vector KNNClassifier::_distanceToRow(const RowVector& row)
 {
     auto ret = Vector(_X.rows());
     for (Eigen::Index i = 0; i < _X.rows(); ++i)
     {
-        auto diff = _X.row(i) - row.transpose();
+        auto diff = _X.row(i) - row;
         ret(i) = diff.squaredNorm();
     }
     return ret;
@@ -35,7 +35,7 @@ Vector KNNClassifier::_distanceToRow(const Vector& row)
 * Predice la clasificacion utilizando KNN
 * Devuelve 1.0 (positiva), 0.0 (negativa)
 */
-double KNNClassifier::_predictRow(const Vector& row)
+double KNNClassifier::_predictRow(const RowVector& row)
 {
     auto dist = _distanceToRow(row);
     

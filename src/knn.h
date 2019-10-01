@@ -12,8 +12,8 @@ public:
 
 private:
 
-    Vector _distanceToRow(const Vector& row);
-    double _predictRow(const Vector& row);
+    Vector _distanceToRow(const RowVector& row);
+    double _predictRow(const RowVector& row);
 
     size_t _k;
     SparseMatrix _X;
