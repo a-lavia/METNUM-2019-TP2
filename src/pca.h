@@ -5,8 +5,11 @@ class PCA {
 public:
     PCA(unsigned int n_components);
 
-    void fit(Matrix X);
+    void fit(const Matrix& X);
 
-    Eigen::MatrixXd transform(SparseMatrix X);
+    Matrix transform(const SparseMatrix& X);
+
 private:
+    size_t _alpha;
+    Matrix _base;
 };

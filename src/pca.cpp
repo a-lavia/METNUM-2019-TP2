@@ -4,18 +4,19 @@
 
 using namespace std;
 
-
-PCA::PCA(unsigned int n_components)
+PCA::PCA(unsigned int n_components) : _alpha(n_components)
 {
     
 }
 
-void PCA::fit(Matrix X)
+void PCA::fit(const Matrix& X)
 {
+    Matrix center = X.rowwise() - X.colwise().mean();
+    Matrix cov = (center.transpose() * center) / double(X.rows() - 1);
+    _base = get_first_eigenvalues(cov, X.rows()).second;
 }
 
-
-MatrixXd PCA::transform(SparseMatrix X)
+Matrix PCA::transform(const SparseMatrix& X)
 {
-  throw std::runtime_error("Sin implementar");
+    return X * _base.block(0, 0, X.rows(), _alpha);
 }

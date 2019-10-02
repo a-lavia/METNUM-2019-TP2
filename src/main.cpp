@@ -35,6 +35,7 @@ int main(int argc, char** argv){
     std::cout << classifier.predict(x) << std::endl;
     */
 
+    /*
     Vector d(5);
     d << 5.0, 4.0, 3.0, 2.0, 1.0;
     Matrix D = d.asDiagonal();
@@ -51,6 +52,19 @@ int main(int argc, char** argv){
 
     std::pair<Vector, Matrix> es = get_first_eigenvalues(M, 5);
     std::cout << es.first << std::endl << es.second << std::endl;
+    */
 
+    /*
+    Matrix m(3,3);
+    m << 1,1,1,2,2,2,3,3,3;
+    Matrix center = m.rowwise() - m.colwise().mean();
+    Matrix cov = (center.transpose() * center) / double(m.rows() - 1);
+    std::cout << cov << std::endl;
+    std::cout << get_first_eigenvalues(cov, cov.rows()).first << std::endl;
+    std::cout << get_first_eigenvalues(cov, cov.rows()).second << std::endl;
+
+    Matrix base = get_first_eigenvalues(cov, cov.rows()).second;
+    std::cout << m * base.block(0, 0, base.rows(), 1) << std::endl;
+     */
     return 0;
 }
