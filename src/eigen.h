@@ -23,7 +23,7 @@ pair<double, Vector> donde el primer valor es el autovalor
 y el segundo el autovector asociado
 */
 std::pair<double, Vector>
-    power_iteration(const Matrix& mat, unsigned num_iter=5000, double eps=1e-16);
+    power_iteration(const Matrix& A, unsigned iterations=5000, double epsilon=1e-10);
 
 
 /*
@@ -51,5 +51,5 @@ pair<Vector, Matrix> donde:
     - El segundo elemento es una matriz cuyas columnas son los autovectores
       correspondientes
 */
-std::pair<Eigen::VectorXd, Matrix>
-    get_first_eigenvalues(const Matrix& mat, unsigned num, unsigned num_iter=5000, double epsilon=1e-16);
+std::pair<Vector, Matrix>
+    get_first_eigenvalues(const Matrix& A, unsigned n, unsigned iterations=5000, double epsilon=1e-10);

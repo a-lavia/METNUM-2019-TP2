@@ -8,7 +8,7 @@
 #include "knn.h"
 
 int main(int argc, char** argv){
-
+    /*
     KNNClassifier classifier(2);
     SparseMatrix x(3,4);
     x.insert(0,0)=1;
@@ -33,6 +33,24 @@ int main(int argc, char** argv){
     classifier.fit(x,y);
 
     std::cout << classifier.predict(x) << std::endl;
+    */
+
+    Vector d(5);
+    d << 5.0, 4.0, 3.0, 2.0, 1.0;
+    Matrix D = d.asDiagonal();
+
+    Matrix v = Matrix::Constant(5,1,1.0);
+    v = v / v.norm();
+
+    Matrix B = Matrix::Identity(5,5) - 2.0 *(v*v.transpose());//Householder
+
+    Matrix M = B.transpose() * D * B;
+
+    std::pair<double, Vector> e = power_iteration(M);
+    std::cout << e.first << std::endl << e.second << std::endl;
+
+    std::pair<Vector, Matrix> es = get_first_eigenvalues(M, 5);
+    std::cout << es.first << std::endl << es.second << std::endl;
 
     return 0;
 }
