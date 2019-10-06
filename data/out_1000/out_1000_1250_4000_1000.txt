@@ -1,0 +1,5 @@
+k: 1250
+max_features: 1000
+train: 4000
+test: 1000
+Accuracy: 0.625
