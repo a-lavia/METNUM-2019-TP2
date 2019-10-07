@@ -10,7 +10,7 @@ KNNClassifier::KNNClassifier(unsigned int n_neighbors) : _k(n_neighbors)
 {
 }
 
-void KNNClassifier::fit(const SparseMatrix& X, const Vector& y)
+void KNNClassifier::fit(const Matrix& X, const Vector& y)
 {
     _X = X;
     _y = y;
@@ -25,8 +25,7 @@ Vector KNNClassifier::_distanceToRow(const RowVector& row)
     auto ret = Vector(_X.rows());
     for (Eigen::Index i = 0; i < _X.rows(); ++i)
     {
-        auto diff = _X.row(i) - row;
-        ret(i) = diff.squaredNorm();
+        ret(i) = (_X.row(i) - row).squaredNorm();
     }
     return ret;
 }
@@ -52,7 +51,7 @@ double KNNClassifier::_predictRow(const RowVector& row)
     return res;
 }
 
-Vector KNNClassifier::predict(const SparseMatrix& X)
+Vector KNNClassifier::predict(const Matrix& X)
 {
     // Creamos vector columna a devolver
     auto ret = Vector(X.rows());

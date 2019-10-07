@@ -7,8 +7,8 @@ class KNNClassifier {
 public:
     KNNClassifier(unsigned int n_neighbors);
 
-    void fit(const SparseMatrix& X, const Vector& y);
-    Vector predict(const SparseMatrix& X);
+    void fit(const Matrix& X, const Vector& y);
+    Vector predict(const Matrix& X);
 
 private:
 
@@ -16,6 +16,6 @@ private:
     double _predictRow(const RowVector& row);
 
     size_t _k;
-    SparseMatrix _X;
+    Matrix _X;
     Vector _y;
 };
