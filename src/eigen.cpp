@@ -13,8 +13,7 @@ pair<double, Vector> power_iteration(const Matrix& A, unsigned iterations, doubl
         Vector o = v;
         v = A * v;
         v.normalize();
-        Vector diff = v - o;
-        if (diff.squaredNorm() < epsilon * epsilon) {
+        if ((v - o).squaredNorm() < epsilon * epsilon) {
             break;
         }
     }
