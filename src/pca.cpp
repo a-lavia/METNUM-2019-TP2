@@ -13,10 +13,15 @@ void PCA::fit(const Matrix& X)
 {
     Matrix center = X.rowwise() - X.colwise().mean();
     Matrix cov = (center.transpose() * center) / double(X.rows() - 1);
-    _base = get_first_eigenvalues(cov, X.rows()).second;
+    _base = get_first_eigenvalues(cov, _alpha).second;
 }
 
-Matrix PCA::transform(const SparseMatrix& X)
+Matrix PCA::transform(const Matrix& X)
 {
-    return X * _base.block(0, 0, X.rows(), _alpha);
+    return transformBeta(X, _alpha);
+}
+
+Matrix PCA::transformBeta(const Matrix& X, unsigned int beta)
+{
+    return X * _base.block(0, 0, X.rows(), beta);
 }
