@@ -1,10 +1,5 @@
-"""Clasifica el conjunto de entrada usando el mejor clasificador encontrado
+"""Clasifica el conjunto de entrada usando el mejor clasificador encontrado"""
 
-Nota: Asumimos que el .so generado (sentiment.cpython....so) está en la carpeta
-`notebooks/`
-
-"""
-# Estas dos líneas permiten que python encuentre la librería sentiment en notebooks/
 import sys
 sys.path.append("notebooks/")
 
@@ -16,24 +11,23 @@ def get_instances(df, df_test):
     """
     Lee instancias de entrenamiento y de test
     """
-    text_train = df[df.type == 'train']["review"]
-    label_train = df[df.type == 'train']["label"]
+    trainData = df[df.type == 'train'].sample(n=4000, random_state=123)
+
+    text_train = trainData["review"]
+    label_train = trainData["label"]
 
     text_test = df_test["review"]
     ids_test = df_test["id"]
 
     print("Cantidad de instancias de entrenamiento = {}".format(len(text_train)))
     print("Cantidad de instancias de test = {}".format(len(text_test)))
-    vectorizer = CountVectorizer(
-        max_df=0.85, min_df=0.01,
-        max_features=5000, ngram_range=(1, 2),
-    )
+    vectorizer = CountVectorizer(max_df=0.95, min_df=0.0,max_features=5000)
 
     vectorizer.fit(text_train)
 
-    X_train, y_train = vectorizer.transform(text_train), (label_train == 'pos').values
+    X_train, y_train = vectorizer.transform(text_train).toarray(), (label_train == 'pos').values
 
-    X_test = vectorizer.transform(text_test)
+    X_test = vectorizer.transform(text_test).toarray()
 
     return X_train, y_train, X_test, ids_test
 
@@ -50,19 +44,11 @@ if __name__ == '__main__':
 
     print("Vectorizando datos...")
     X_train, y_train, X_test, ids_test = get_instances(df, df_test)
-    #Comentar esto si nuestra mejor configuración no usa PCA
-    alpha = 100
-    pca = PCA(alpha)
-
-    print("Entrenando PCA")
-    pca.fit(X_train.toarray())
-    X_train = pca.transform(X_train)
-    X_test = pca.transform(X_test)
 
     """
     Entrenamos KNN
     """
-    clf = KNNClassifier(100)
+    clf = KNNClassifier(1120)
 
     clf.fit(X_train, y_train)
 
@@ -71,7 +57,7 @@ if __name__ == '__main__':
     """
     print("Prediciendo etiquetas...")
     y_pred = clf.predict(X_test).reshape(-1)
-    # Convierto a 'pos' o 'neg'
+
     labels = ['pos' if val == 1 else 'neg' for val in y_pred]
 
     df_out = pd.DataFrame({"id": ids_test, "label": labels})
